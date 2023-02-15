@@ -40,12 +40,12 @@ public class RestClient {
     /**
      * Permet de récupérer les détails d'un client
      * GET sur http://localhost:8080/api/clients/1
-     * @param client le client qui va être injecté à partir de son id
+     * @param idClient id du client
      * @return le client qui sera traduit en JSON
      */
     @GetMapping("{id}")
-    public Client getClient(@PathVariable("id") Client client) {
-        return client;
+    public Client getClient(@PathVariable("id") long idClient) {
+        return serviceClient.recupererClient(idClient);
     }
 
     /**
@@ -65,25 +65,25 @@ public class RestClient {
      * Permet de créer un compte pour ce client
      * POST sur http://localhost:8080/api/clients/1/comptes
      * Note : c'est dans ce contrôleur car la ressource est ici considéré comme une sous-ressource
-     * @param client le client qui sera injecté à partir de son id
+     * @param idClient id du client
      * @param compte les détails du compte qui seront envoyés par le front
      *               ici seul le solde est utile
      *               Exemple : { "solde" : 10000 }
      * @return le nouveau compte
      */
     @PostMapping("{id}/comptes")
-    public Compte ouvrirCompte(@PathVariable("id") Client client, @RequestBody Compte compte) {
-        return serviceCompte.ouvrir(client.getId(), compte.getSolde());
+    public Compte ouvrirCompte(@PathVariable("id") long idClient, @RequestBody Compte compte) {
+        return serviceCompte.ouvrir(idClient, compte.getSolde());
     }
 
     /**
      * Permet de récupérer la liste des comptes d'un client donné
      * GET sur http://localhost:8080/api/clients/1/comptes
-     * @param client le client qui sera injecté à partir de son id
+     * @param idClient id du client
      * @return la liste des comptes en JSON
      */
     @GetMapping("{id}/comptes")
-    public List<Compte> listerComptes(@PathVariable("id") Client client) {
-        return client.getComptes();
+    public List<Compte> listerComptes(@PathVariable("id") long idClient) {
+        return serviceClient.recupererClient(idClient).getComptes();
     }
 }
