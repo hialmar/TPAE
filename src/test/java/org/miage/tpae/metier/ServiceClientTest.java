@@ -51,7 +51,7 @@ class ServiceClientTest {
         // On vérifie que le client apparait lors d'une recherche à partir du prénom et du nom
         List<Client> clientList = clientRepository.findByPrenomAndNom("Edouard", "Test");
         assertTrue(clientList.contains(client));
-        // on essaie de re-créer le même client
+        // on essaie de recréer le même client
         Client client2 = serviceClient.creerClient("Edouard", "Test");
         // on vérifie que c'est bien le même client
         assertEquals(client2, client);
@@ -76,8 +76,6 @@ class ServiceClientTest {
         assertEquals(client1, client);
         // on tente de récupérer un client inexistant
         // on vérifie que ça lance bien l'exception ClientInexistant
-        assertThrows(ClientInexistant.class, () -> {
-            Client client2 = serviceClient.recupererClient(9999L);
-        });
+        assertThrows(ClientInexistant.class, () -> serviceClient.recupererClient(9999L));
     }
 }
