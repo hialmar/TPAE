@@ -188,6 +188,11 @@ public class ServiceCompte {
         // Ceci marche à distance mais pose des problèmes pour les tests
         // Compte compte = findCompte(idCompte);
         // return compte.getOperations();
+        // teste si le compte existe
+        Optional<Compte> optionalCompte = compteRepository.findById(idCompte);
+        if (optionalCompte.isEmpty()) {
+            throw new CompteInconnuException("Le compte "+idCompte+" est inconnu");
+        }
         return operationCompteRepository.findAllByCompteId(idCompte);
     }
 

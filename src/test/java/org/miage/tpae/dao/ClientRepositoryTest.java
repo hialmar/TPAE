@@ -41,5 +41,11 @@ class ClientRepositoryTest {
         assertNotNull(liste);
         // et qu'elle contient bien le client inséré en base
         assertTrue(liste.contains(client));
+        // on teste la méthode avec un autre nom
+        liste =  clientRepository.findByPrenomAndNom("Jean", "Test2");
+        // on vérifie que la liste n'est pas nulle
+        assertNotNull(liste);
+        // et qu'elle est bien vide
+        assertTrue(liste.isEmpty());
     }
 }

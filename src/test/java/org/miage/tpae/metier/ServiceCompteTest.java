@@ -9,6 +9,7 @@ import org.miage.tpae.entities.Client;
 import org.miage.tpae.entities.Compte;
 import org.miage.tpae.entities.OperationCompte;
 import org.miage.tpae.export.Position;
+import org.miage.tpae.utilities.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -81,6 +82,14 @@ class ServiceCompteTest {
         assertNotNull(compte.getId());
         // on vérifie que le solde est bien le même
         assertEquals(compte.getSolde(), solde, 0.1);
+        // on tente d'ouvrir un compte pour un client inexistant
+        // on vérifie que ça lance bien l'exception ClientInexistant
+        assertThrows(ClientInexistant.class,
+                () -> serviceCompte.ouvrir(9999L, 1000));
+        // on tente d'ouvrir un compte avec un solde négatif,
+        // on vérifie que ça lance bien l'exception MontantInvalidException
+        assertThrows(MontantInvalidException.class,
+                () -> serviceCompte.ouvrir(client.getId(), -1000));
     }
 
     /**
@@ -102,6 +111,12 @@ class ServiceCompteTest {
         assertTrue(compte1.isPresent());
         // mais qu'il n'est plus actif
         assertFalse(compte1.get().isActif());
+        // on tente de fermer un compte inexistant
+        // on vérifie que ça lance bien l'exception CompteInconnuException
+        assertThrows(CompteInconnuException.class, () -> serviceCompte.fermer(9999L));
+        // on tente de fermer un compte déjà fermé
+        // on vérifie que ça lance bien l'exception CompteClotureException
+        assertThrows(CompteClotureException.class, () -> serviceCompte.fermer(compte.getId()));
     }
 
     /**
@@ -115,7 +130,7 @@ class ServiceCompteTest {
         assertNotNull(compte.getId());
         assertEquals(compte.getSolde(), solde, 0.1);
 
-        // on appele la méthode
+        // on appelle la méthode
         Position position = serviceCompte.consulter(compte.getId());
         // on vérifie que la position est non nulle
         assertNotNull(position);
@@ -123,6 +138,14 @@ class ServiceCompteTest {
         assertEquals(compte.getSolde(), position.getSolde(), 0.1);
         // on vérifie que la date de dernière opération est ok
         assertEquals(compte.getDateInterrogation(), position.getDateInterrogation());
+        // on tente de consulter un compte inexistant
+        // on vérifie que ça lance bien l'exception CompteInconnuException
+        assertThrows(CompteInconnuException.class, () -> serviceCompte.consulter(9999L));
+        // on ferme le compte
+        serviceCompte.fermer(compte.getId());
+        // on tente de consulter un compte déjà fermé
+        // on vérifie que ça lance bien l'exception CompteClotureException
+        assertThrows(CompteClotureException.class, () -> serviceCompte.fermer(compte.getId()));
     }
 
     /**
@@ -143,6 +166,24 @@ class ServiceCompteTest {
         Position position = serviceCompte.consulter(compte.getId());
         // on vérifie que le solde est bien modifié
         assertEquals(solde, position.getSolde(), 0.1);
+        // on tente de débiter un compte inexistant
+        // on vérifie que ça lance bien l'exception CompteInconnuException
+        assertThrows(CompteInconnuException.class,
+                () -> serviceCompte.debiter(9999L, 100));
+        // on tente de débiter un compte d'une somme négative,
+        // on vérifie que ça lance bien l'exception MontantInvalidException
+        assertThrows(MontantInvalidException.class,
+                () -> serviceCompte.debiter(compte.getId(), -100));
+        // on tente de débiter un compte d'une somme trop importante
+        // on vérifie que ça lance bien l'exception SoldeInsuffisantException
+        assertThrows(SoldeInsuffisantException.class,
+                () -> serviceCompte.debiter(compte.getId(), 1000000));
+        // on ferme le compte
+        serviceCompte.fermer(compte.getId());
+        // on tente de débiter un compte déjà fermé
+        // on vérifie que ça lance bien l'exception CompteClotureException
+        assertThrows(CompteClotureException.class,
+                () -> serviceCompte.debiter(compte.getId(), 100));
     }
 
     /**
@@ -163,6 +204,20 @@ class ServiceCompteTest {
         Position position = serviceCompte.consulter(compte.getId());
         // on vérifie que le solde est bien modifié
         assertEquals(solde, position.getSolde(), 0.1);
+        // on tente de créditer un compte inexistant
+        // on vérifie que ça lance bien l'exception CompteInconnuException
+        assertThrows(CompteInconnuException.class,
+                () -> serviceCompte.debiter(9999L, 100));
+        // on tente de créditer un compte d'une somme négative,
+        // on vérifie que ça lance bien l'exception MontantInvalidException
+        assertThrows(MontantInvalidException.class,
+                () -> serviceCompte.debiter(compte.getId(), -100));
+        // on ferme le compte
+        serviceCompte.fermer(compte.getId());
+        // on tente de créditer un compte déjà fermé
+        // on vérifie que ça lance bien l'exception CompteClotureException
+        assertThrows(CompteClotureException.class,
+                () -> serviceCompte.debiter(compte.getId(), 100));
     }
 
     /**
@@ -185,6 +240,28 @@ class ServiceCompteTest {
         assertEquals(solde-100, position.getSolde(), 0.1);
         Position position2 = serviceCompte.consulter(compte2.getId());
         assertEquals(solde+100, position2.getSolde(), 0.1);
+        // on tente de virer depuis un compte inexistant
+        // on vérifie que ça lance bien l'exception CompteInconnuException
+        assertThrows(CompteInconnuException.class, () -> serviceCompte.virer(9999L, compte2.getId(), 100));
+        // on tente de virer vers un compte inexistant
+        // on vérifie que ça lance bien l'exception CompteInconnuException
+        assertThrows(CompteInconnuException.class, () -> serviceCompte.virer(compte.getId(), 9999L, 100));
+        // on tente de virer une somme négative,
+        // on vérifie que ça lance bien l'exception MontantInvalidException
+        assertThrows(MontantInvalidException.class, () -> serviceCompte.virer(compte.getId(), compte2.getId(), -100));
+        // on tente de virer une somme trop importante
+        // on vérifie que ça lance bien l'exception SoldeInsuffisantException
+        assertThrows(SoldeInsuffisantException.class, () -> serviceCompte.virer(compte.getId(), compte2.getId(), 1000000));
+        // on ferme le second compte
+        serviceCompte.fermer(compte2.getId());
+        // on tente de virer vers un compte déjà fermé
+        // on vérifie que ça lance bien l'exception CompteClotureException
+        assertThrows(CompteClotureException.class, () -> serviceCompte.virer(compte.getId(), compte2.getId(), 1000000));
+        // on ferme le premier compte
+        serviceCompte.fermer(compte.getId());
+        // on tente de virer depuis un compte déjà fermé
+        // on vérifie que ça lance bien l'exception CompteClotureException
+        assertThrows(CompteClotureException.class, () -> serviceCompte.virer(compte.getId(), compte2.getId(), 1000000));
     }
 
     /**
@@ -205,7 +282,16 @@ class ServiceCompteTest {
         serviceCompte.crediter(compte.getId(), 100);
         // on récupère la liste des opérations
         operations = serviceCompte.recupererOperations(compte.getId());
-        // il doit y avoir maintenant deux opérationq : l'ouverture du compte et le crédit
+        // il doit y avoir maintenant deux opérations : l'ouverture du compte et le crédit
         assertEquals(operations.size(), 2);
+        // on ferme le compte
+        serviceCompte.fermer(compte.getId());
+        // on récupère la liste des opérations
+        operations = serviceCompte.recupererOperations(compte.getId());
+        // il doit y avoir maintenant trois opérationq : l'ouverture du compte, le crédit et la fermeture
+        assertEquals(operations.size(), 3);
+        // on tente de récupérer les opérations d'un compte inexistant
+        // on vérifie que ça lance bien l'exception CompteInconnuException
+        assertThrows(CompteInconnuException.class, () -> serviceCompte.recupererOperations(9999L));
     }
 }

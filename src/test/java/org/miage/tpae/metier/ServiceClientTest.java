@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.miage.tpae.dao.ClientRepository;
 import org.miage.tpae.entities.Client;
+import org.miage.tpae.utilities.ClientInexistant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
@@ -50,6 +51,10 @@ class ServiceClientTest {
         // On vérifie que le client apparait lors d'une recherche à partir du prénom et du nom
         List<Client> clientList = clientRepository.findByPrenomAndNom("Edouard", "Test");
         assertTrue(clientList.contains(client));
+        // on essaie de re-créer le même client
+        Client client2 = serviceClient.creerClient("Edouard", "Test");
+        // on vérifie que c'est bien le même client
+        assertEquals(client2, client);
     }
 
     /**
@@ -69,5 +74,10 @@ class ServiceClientTest {
         Client client1 = serviceClient.recupererClient(client.getId());
         // on vérifie que c'est bien le même client
         assertEquals(client1, client);
+        // on tente de récupérer un client inexistant
+        // on vérifie que ça lance bien l'exception ClientInexistant
+        assertThrows(ClientInexistant.class, () -> {
+            Client client2 = serviceClient.recupererClient(9999L);
+        });
     }
 }
