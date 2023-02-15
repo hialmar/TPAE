@@ -52,7 +52,7 @@ class ServiceClientUnitTest {
         assertEquals(client2, client);
         // on vérifie que la méthode save n'a été appelée qu'une fois
         verify(clientRepository, times(1)).save(any());
-
+        // on vérifie que la méthode findByPrenomAndNom a été appelée deux fois
         verify(clientRepository, times(2)).findByPrenomAndNom("Jean", "Test");
     }
 
