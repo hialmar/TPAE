@@ -185,8 +185,10 @@ public class ServiceCompte {
      * @return la liste d'opérations
      */
     public Collection<OperationCompte> recupererOperations(long idCompte) {
-        Compte compte = findCompte(idCompte);
-        return compte.getOperations();
+        // Ceci marche à distance mais pose des problèmes pour les tests
+        // Compte compte = findCompte(idCompte);
+        // return compte.getOperations();
+        return operationCompteRepository.findAllByCompteId(idCompte);
     }
 
     /**
