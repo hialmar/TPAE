@@ -14,12 +14,15 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Classe de test pour ServiceClient
+ *
+ * Ici, c'est un test d'intégration avec une BD H2 en mémoire
+ * Note : ces tests ne fonctionnent que via Maven.
  */
 @DataJpaTest
 class ServiceClientTest {
 
     /**
-     * ClientRepository sera injecté par DataJpaTest
+     * ClientRepository qui sera injecté par DataJpaTest
      */
     @Autowired
     ClientRepository clientRepository;

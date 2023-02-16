@@ -1,10 +1,43 @@
-# TPAE
-TP Banque pour Applications d'Entreprises
+# TP AE
+## TP Banque pour Applications d'Entreprises
 
 Travaux Pratiques sur les Applications d'Entreprises avec Spring
 
+Sujets des TPs sous moodle :
+https://moodle-miage-toulouse.westeurope.cloudapp.azure.com/course/view.php?id=22
 
 
+### Configuration
+
+Ce TP utilise une base de données MySQL qu'on peut créer sous Docker avec la commande :
+docker run --name=mysqltp -e MYSQL_ROOT_PASSWORD=my-secret-pw -e MYSQL_DATABASE=test -p 3306:3306 mysql
+
+Si vous avez des problèmes avec Docker pour Windows on vous recommande WAMP : https://www.wampserver.com/
+
+### Infos sur les Tests
+
+Les tests ont été créés à partir de https://www.baeldung.com/spring-boot-testing
+Attention ici on est resté avec Junit5 donc les configurations sont un peu différentes
+
+Vous avez un exemple de tests unitaires dans le cadre de Spring Boot :
+src/test/java/org.miage.tpae/exposition/RestClientTest
+
+Des tests unitaires utilisant uniquement Mockito :
+src/test/java/org.miage.tpae/ServiceClientUnitTest.java
+
+Des tests d'intégration avec une base de donnée en mémoire H2 :
+src/test/java/org.miage.tpae/metier/ServiceClientTest
+
+Des tests d'intégration avec tout le logiciel :
+src/test/java/org.miage.tpae/TpaeApplicationIntegrationsTest
+
+Note : la plupart de ces tests ne fonctionnent que via Maven puisqu'ils utilisent le plugin Spring Boot
+
+---
+
+# Tutoriels
+
+Ce qui suit est le fichier Readme original (utile pour les liens vers les tutoriels).
 
 # Getting Started
 

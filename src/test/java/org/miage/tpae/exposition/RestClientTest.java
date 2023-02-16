@@ -1,6 +1,5 @@
 package org.miage.tpae.exposition;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.miage.tpae.dao.ClientRepository;
 import org.miage.tpae.dao.CompteRepository;
@@ -26,108 +25,128 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.mockito.BDDMockito.given;
 
 
-
+/**
+ * Classe de test unitaire pour le contrôleur REST RestClient
+ */
 @WebMvcTest(RestClient.class)
 class RestClientTest {
-
     @Autowired
-    private MockMvc mvc;
+    private MockMvc mvc; // injecté automatiquement
 
+    // Tous les autres beans sont mockés
     @MockBean
     private ServiceClient serviceClient;
 
     @MockBean
     private ServiceCompte serviceCompte;
 
-    @MockBean
+    @MockBean // on en a besoin pour le démarrage des tests car il est utilisé par serviceCompte
     private ClientRepository clientRepository;
 
-    @MockBean
+    @MockBean // on en a besoin pour le démarrage des tests car il est utilisé par serviceCompte
     private CompteRepository compteRepository;
 
     @MockBean
     OperationCompteRepository operationCompteRepository;
 
-    @BeforeEach
-    void setUp() {
-    }
 
+    /**
+     * Test de la méthode GET getClient
+     * @throws Exception en cas de problème avec MockMvc
+     */
     @Test
     void getClient() throws Exception {
+        // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
         client.setPrenom("Jean");
         client.setNom("Test");
         client.setId(0L);
-
+        // On mocke la méthode métier
         given(serviceClient.recupererClient(0L)).willReturn(client);
-
+        // On appelle la méthode GET
         mvc.perform(get("/api/clients/0")
-                        .contentType("application/json;charset=UTF-8"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.nom", is(client.getNom())));
+                        .contentType("application/json;charset=UTF-8")) // précise le content-type
+                .andExpect(status().isOk()) // vérifie que tout s'est bien passé
+                .andExpect(jsonPath("$.nom", is(client.getNom()))); // vérifie qu'il y a bien des infos
     }
 
+    /**
+     * Test de la méthode POST creerClient
+     * @throws Exception en cas de problème avec MockMvc
+     */
     @Test
     void creerClient() throws Exception {
+        // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
         client.setPrenom("Jean");
         client.setNom("Test");
         client.setId(0L);
-
+        // On mocke la méthode métier
         given(serviceClient.creerClient("Jean", "Test")).willReturn(client);
-
+        // On appelle la méthode POST
         mvc.perform(post("/api/clients")
-                        .contentType("application/json;charset=UTF-8")
-                        .content("{\"nom\" : \"Test\", \"prenom\":\"Jean\"}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(0)));
+                        .contentType("application/json;charset=UTF-8") // précise le content-type
+                        .content("{\"nom\" : \"Test\", \"prenom\":\"Jean\"}")) // précise le contenu envoyé
+                .andExpect(status().isOk()) // vérifie que tout s'est bien passé
+                .andExpect(jsonPath("$.id", is(0))); // vérifie qu'il y a bien des infos
     }
 
+    /**
+     * Test de la méthode POST ouvrirCompte
+     * @throws Exception en cas de problème avec MockMvc
+     */
     @Test
     void ouvrirCompte() throws Exception {
+        // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
         client.setPrenom("Jean");
         client.setNom("Test");
         client.setId(0L);
-
+        // On crée un compte en dur (y compris son id - pas de JPA ici)
         Compte compte = new Compte();
         compte.setId(1L);
         compte.setClient(client);
         compte.setSolde(1000);
         compte.setDateInterrogation(null);
-
+        // On mocke les méthodes métier
         given(serviceClient.recupererClient(0L)).willReturn(client);
         given(serviceCompte.ouvrir(0L, 1000)).willReturn(compte);
-
+        // On appelle la méthode POST
         mvc.perform(post("/api/clients/0/comptes")
-                        .contentType("application/json;charset=UTF-8")
-                        .content("{\"solde\" : 1000}"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.id", is(1)));
+                        .contentType("application/json;charset=UTF-8") // précise le content-type
+                        .content("{\"solde\" : 1000}")) // précise le contenu envoyé
+                .andExpect(status().isOk()) // vérifie que tout s'est bien passé
+                .andExpect(jsonPath("$.id", is(1))); // vérifie qu'il y a bien des infos
     }
 
+    /**
+     * Test de la méthode GET listerComptes
+     * @throws Exception en cas de problème avec MockMvc
+     */
     @Test
     void listerComptes() throws Exception {
+        // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
         client.setPrenom("Jean");
         client.setNom("Test");
         client.setId(0L);
-
+        // On crée un compte en dur (y compris son id - pas de JPA ici)
         Compte compte = new Compte();
         compte.setId(1L);
         compte.setClient(client);
         compte.setSolde(1000);
         compte.setDateInterrogation(null);
+        // On doit gérer la liste nous-mêmes (pas de JPA ici)
         List<Compte> compteList = Arrays.asList(compte);
         client.setComptes(compteList);
-
+        // On mocke la méthode métier
         given(serviceClient.recupererClient(0L)).willReturn(client);
-
+        // On appelle la méthode GET
         mvc.perform(get("/api/clients/0/comptes")
-                        .contentType("application/json;charset=UTF-8"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(1)))
-                .andExpect(jsonPath("$[0].id", is(1)));
+                        .contentType("application/json;charset=UTF-8")) // précise le content-type
+                .andExpect(status().isOk()) // vérifie que tout s'est bien passé
+                .andExpect(jsonPath("$", hasSize(1))) // vérifie qu'il y a bien des infos dans la liste
+                .andExpect(jsonPath("$[0].id", is(1))); // vérifie qu'il y a bien des infos
     }
 
 }

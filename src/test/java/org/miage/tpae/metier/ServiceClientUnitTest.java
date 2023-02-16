@@ -14,18 +14,35 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Test unitaire avec Mockito de ServiceClient
+ */
 class ServiceClientUnitTest {
 
+    /**
+     * ClientRepository qu'on va mocker
+     */
     ClientRepository clientRepository;
 
+    /**
+     * ServiceClient qu'on va créer avec le repo mocké
+     */
     ServiceClient serviceClient;
 
+    /**
+     * Méthode appelée avant toute méthode de test
+     */
     @BeforeEach
     void setUp() {
+        // mock du repo
         clientRepository = mock(ClientRepository.class);
+        // création du service métier avec le mock
         serviceClient = new ServiceClient(clientRepository);
     }
 
+    /**
+     * Test de creerClient
+     */
     @Test
     void creerClient() {
         // on crée un client
@@ -56,6 +73,9 @@ class ServiceClientUnitTest {
         verify(clientRepository, times(2)).findByPrenomAndNom("Jean", "Test");
     }
 
+    /**
+     * Test de recupererClient
+     */
     @Test
     void recupererClient() {
         // crée un client
