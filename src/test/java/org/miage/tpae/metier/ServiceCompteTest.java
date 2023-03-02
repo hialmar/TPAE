@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Classe de test pour ServiceCompte.
+ *
+ * Ici, c'est un test d'intégration avec une BD H2 en mémoire
  * Note : ces tests ne fonctionnent que via Maven.
  */
 @DataJpaTest // pour tester en intégration avec la base de donnée H2

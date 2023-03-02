@@ -14,6 +14,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Classe de test pour OperationCompteRepository
+ *
+ * C'est un test d'intégration avec la BD H2 en mémoire
  */
 @DataJpaTest
 class OperationCompteRepositoryTest {

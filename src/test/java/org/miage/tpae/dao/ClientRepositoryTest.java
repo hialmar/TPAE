@@ -11,6 +11,8 @@ import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Classe de test pour ClientRepository
+ *
+ * C'est un test d'intégration avec la BD H2 en mémoire
  */
 @DataJpaTest  // pour tester en intégration avec la base de donnée H2
 // Si on veut tester avec la vraie BD, il faut en plus :
@@ -18,7 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class ClientRepositoryTest {
 
     @Autowired
-    ClientRepository clientRepository;
+    ClientRepository clientRepository; // repo injecté
 
     /**
      * Test de la méthode findByPrenomAndNom
