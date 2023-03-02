@@ -70,11 +70,11 @@ public class TpaeApplication implements CommandLineRunner {
     @Override
     @Transactional(propagation=Propagation.REQUIRED, noRollbackFor=Exception.class)
     public void run(String... args) throws Exception {
-        List<Client> clientList = clientRepository.findByPrenomAndNom("Jean", "Dupond");
+        List<Client> clientList = clientRepository.findByPrenomAndNom("Jean", "Dupont");
 
         if (clientList.isEmpty()) {
             Client c = new Client();
-            c.setNom("Dupond");
+            c.setNom("Dupont");
             c.setPrenom("Jean");
             c = clientRepository.save(c);
 
