@@ -24,12 +24,12 @@ import java.util.Optional;
 public class ServiceCompte {
 
     /**
-     * Bean repository pour les clients qui sera injecté
+     * Bean repository, pour les clients, qui sera injecté
      */
     private final ClientRepository clientRepository;
 
     /**
-     * Bean repository pour les comptes qui sera injecté
+     * Bean repository, pour les comptes, qui sera injecté
      */
     private final CompteRepository compteRepository;
 
@@ -185,9 +185,7 @@ public class ServiceCompte {
      * @return la liste d'opérations
      */
     public Collection<OperationCompte> recupererOperations(long idCompte) {
-        // Ceci marche à distance mais pose des problèmes pour les tests
-        // Compte compte = findCompte(idCompte);
-        // return compte.getOperations();
+        // Ceci marche à distance, mais pose des problèmes pour les tests
         // teste si le compte existe
         Optional<Compte> optionalCompte = compteRepository.findById(idCompte);
         if (optionalCompte.isEmpty()) {
