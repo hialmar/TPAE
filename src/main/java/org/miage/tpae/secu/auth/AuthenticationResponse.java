@@ -6,6 +6,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Réponse d'authentification portant des JWT
+ */
 @Data
 @Builder
 @AllArgsConstructor
