@@ -9,6 +9,7 @@ import org.miage.tpae.metier.ServiceCompte;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -65,6 +66,7 @@ class TpaeApplicationIntegrationsTest {
     }
 
     @Test
+    @WithMockUser
     void getClient() throws Exception {
         mvc.perform(get("/api/clients/{id}", client.getId())
                         .contentType("application/json;charset=UTF-8"))
@@ -73,6 +75,7 @@ class TpaeApplicationIntegrationsTest {
     }
 
     @Test
+    @WithMockUser
     void creerClient() throws Exception {
         mvc.perform(post("/api/clients")
                         .contentType("application/json;charset=UTF-8")
@@ -84,6 +87,7 @@ class TpaeApplicationIntegrationsTest {
     }
 
     @Test
+    @WithMockUser
     void ouvrirCompte() throws Exception {
         mvc.perform(post("/api/clients/{id}/comptes", client.getId())
                         .contentType("application/json;charset=UTF-8")
@@ -94,6 +98,7 @@ class TpaeApplicationIntegrationsTest {
     }
 
     @Test
+    @WithMockUser
     void listerComptes() throws Exception {
         mvc.perform(get("/api/clients/{id}/comptes", client.getId())
                         .contentType("application/json;charset=UTF-8"))

@@ -21,7 +21,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -63,7 +63,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
-    @WithMockUser(value = "spring")
+    @WithMockUser
     void getClient() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
@@ -84,7 +84,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
-    @WithMockUser(username="admin",roles={"USER","ADMIN"})
+    @WithMockUser
     void creerClient() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
@@ -95,8 +95,8 @@ class RestClientTest {
         given(serviceClient.creerClient("Jean", "Test")).willReturn(client);
         // On appelle la méthode POST
         mvc.perform(post("/api/clients")
+                        .with(csrf())
                         .contentType("application/json;charset=UTF-8") // précise le content-type
-                        .header("Authorization", "Bearer aaaa")
                         .content("{\"nom\" : \"Test\", \"prenom\":\"Jean\"}")) // précise le contenu envoyé
                 .andExpect(status().isOk()) // vérifie que tout s'est bien passé
                 .andExpect(jsonPath("$.id", is(0))); // vérifie qu'il y a bien des infos
@@ -107,7 +107,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
-    @WithMockUser(value = "spring")
+    @WithMockUser
     void ouvrirCompte() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
@@ -125,6 +125,7 @@ class RestClientTest {
         given(serviceCompte.ouvrir(0L, 1000)).willReturn(compte);
         // On appelle la méthode POST
         mvc.perform(post("/api/clients/0/comptes")
+                        .with(csrf())
                         .contentType("application/json;charset=UTF-8") // précise le content-type
                         .content("{\"solde\" : 1000}")) // précise le contenu envoyé
                 .andExpect(status().isOk()) // vérifie que tout s'est bien passé
@@ -136,7 +137,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
-    @WithMockUser(value = "spring")
+    @WithMockUser
     void listerComptes() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
