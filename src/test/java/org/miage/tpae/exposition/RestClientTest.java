@@ -63,7 +63,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
-    @WithMockUser
+    @WithMockUser // simule une authentification
     void getClient() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
@@ -84,7 +84,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
-    @WithMockUser
+    @WithMockUser // simule une authentification
     void creerClient() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
@@ -107,7 +107,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
-    @WithMockUser
+    @WithMockUser // simule une authentification
     void ouvrirCompte() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
@@ -137,7 +137,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
-    @WithMockUser
+    @WithMockUser // simule une authentification
     void listerComptes() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();

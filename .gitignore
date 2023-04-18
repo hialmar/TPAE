@@ -4,7 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
-secret.properties
+env.properties
 
 ### STS ###
 .apt_generated
