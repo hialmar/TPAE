@@ -107,6 +107,11 @@
         </site>
     </distributionManagement>
 
+    <scm>
+        <connection>scm:git:git@github.com:Hialmar/TPAE.git</connection>
+        <url>https://github.com/hialmar/TPAE</url>
+    </scm>
+
     <reporting>
         <plugins>
             <plugin>
