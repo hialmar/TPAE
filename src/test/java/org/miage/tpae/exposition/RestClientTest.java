@@ -8,9 +8,12 @@ import org.miage.tpae.entities.Client;
 import org.miage.tpae.entities.Compte;
 import org.miage.tpae.metier.ServiceClient;
 import org.miage.tpae.metier.ServiceCompte;
+import org.miage.tpae.secu.config.JwtService;
+import org.miage.tpae.secu.token.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -18,6 +21,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -49,12 +53,17 @@ class RestClientTest {
     @MockBean
     OperationCompteRepository operationCompteRepository;
 
+    @MockBean
+    JwtService jwtService;
+    @MockBean
+    TokenRepository tokenRepository;
 
     /**
      * Test de la méthode GET getClient
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
+    @WithMockUser // simule une authentification
     void getClient() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
@@ -75,6 +84,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
+    @WithMockUser // simule une authentification
     void creerClient() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
@@ -85,6 +95,7 @@ class RestClientTest {
         given(serviceClient.creerClient("Jean", "Test")).willReturn(client);
         // On appelle la méthode POST
         mvc.perform(post("/api/clients")
+                        .with(csrf())
                         .contentType("application/json;charset=UTF-8") // précise le content-type
                         .content("{\"nom\" : \"Test\", \"prenom\":\"Jean\"}")) // précise le contenu envoyé
                 .andExpect(status().isOk()) // vérifie que tout s'est bien passé
@@ -96,6 +107,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
+    @WithMockUser // simule une authentification
     void ouvrirCompte() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();
@@ -113,6 +125,7 @@ class RestClientTest {
         given(serviceCompte.ouvrir(0L, 1000)).willReturn(compte);
         // On appelle la méthode POST
         mvc.perform(post("/api/clients/0/comptes")
+                        .with(csrf())
                         .contentType("application/json;charset=UTF-8") // précise le content-type
                         .content("{\"solde\" : 1000}")) // précise le contenu envoyé
                 .andExpect(status().isOk()) // vérifie que tout s'est bien passé
@@ -124,6 +137,7 @@ class RestClientTest {
      * @throws Exception en cas de problème avec MockMvc
      */
     @Test
+    @WithMockUser // simule une authentification
     void listerComptes() throws Exception {
         // On crée un client en dur (y compris son id - pas de JPA ici)
         Client client = new Client();

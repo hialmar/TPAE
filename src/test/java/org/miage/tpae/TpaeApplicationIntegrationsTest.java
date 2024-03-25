@@ -9,6 +9,7 @@ import org.miage.tpae.metier.ServiceCompte;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -22,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
- * Tests créés à partir de https://www.baeldung.com/spring-boot-testing
+ * Tests créés à partir de <a href="https://www.baeldung.com/spring-boot-testing">Tutoriel sur les Tests avec Spring Boot</a>
  * Attention ici on est resté avec Junit5 donc les configurations sont un peu différentes
  *
  * Ici, on a les tests d'intégration qui utilisent tout le logiciel
@@ -65,6 +66,7 @@ class TpaeApplicationIntegrationsTest {
     }
 
     @Test
+    @WithMockUser  // simule une authentification
     void getClient() throws Exception {
         mvc.perform(get("/api/clients/{id}", client.getId())
                         .contentType("application/json;charset=UTF-8"))
@@ -73,6 +75,7 @@ class TpaeApplicationIntegrationsTest {
     }
 
     @Test
+    @WithMockUser // simule une authentification
     void creerClient() throws Exception {
         mvc.perform(post("/api/clients")
                         .contentType("application/json;charset=UTF-8")
@@ -84,6 +87,7 @@ class TpaeApplicationIntegrationsTest {
     }
 
     @Test
+    @WithMockUser // simule une authentification
     void ouvrirCompte() throws Exception {
         mvc.perform(post("/api/clients/{id}/comptes", client.getId())
                         .contentType("application/json;charset=UTF-8")
@@ -94,6 +98,7 @@ class TpaeApplicationIntegrationsTest {
     }
 
     @Test
+    @WithMockUser // simule une authentification
     void listerComptes() throws Exception {
         mvc.perform(get("/api/clients/{id}/comptes", client.getId())
                         .contentType("application/json;charset=UTF-8"))
