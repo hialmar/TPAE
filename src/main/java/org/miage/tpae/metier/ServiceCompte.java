@@ -55,7 +55,7 @@ public class ServiceCompte {
      * @param idClient l'id du client pour lequel on ouvre le compte
      * @param soldeInitial le solde initial
      * @return le nouveau compte
-     * @throws MontantInvalidException si le montant est incorrect (<0)
+     * @throws MontantInvalidException si le montant est incorrect (négatif)
      * @throws ClientInexistant si le client n'existe pas
      */
     public Compte ouvrir(long idClient, double soldeInitial) throws MontantInvalidException, ClientInexistant {

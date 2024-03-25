@@ -111,7 +111,40 @@
                     </excludes>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-scm-publish-plugin</artifactId>
+                <version>3.2.1</version>
+                <configuration>
+                    <scmBranch>gh-pages</scmBranch>
+                </configuration>
+            </plugin>
+
         </plugins>
     </build>
 
+    <distributionManagement>
+        <site>
+            <id>github</id>
+            <url>scm:git:git@github.com:Hialmar/TPAE.git</url>
+        </site>
+    </distributionManagement>
+
+    <scm>
+        <connection>scm:git:git@github.com:Hialmar/TPAE.git</connection>
+        <url>https://github.com/hialmar/TPAE</url>
+    </scm>
+
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <additionalOptions>-package</additionalOptions>
+                </configuration>
+            </plugin>
+        </plugins>
+    </reporting>
 </project>

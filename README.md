@@ -35,6 +35,11 @@ Note : la plupart de ces tests ne fonctionnent que via Maven puisqu'ils utilisen
 
 ---
 
+* [Documentation du projet ](https://hialmar.github.io/TPAE/)
+
+  
+---
+
 # Tutoriels
 
 Ce qui suit est le fichier Readme original (utile pour les liens vers les tutoriels).

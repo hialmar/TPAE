@@ -1,0 +1,7 @@
+org.miage.tpae
+org.miage.tpae.dao
+org.miage.tpae.entities
+org.miage.tpae.export
+org.miage.tpae.exposition
+org.miage.tpae.metier
+org.miage.tpae.utilities
