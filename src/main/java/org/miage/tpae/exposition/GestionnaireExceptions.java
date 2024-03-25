@@ -22,7 +22,7 @@ public class GestionnaireExceptions {
      * @return l'erreur 404
      */
     @ExceptionHandler(CompteInconnuException.class)
-    public ResponseEntity<ErrorExport> gereAutreException(HttpServletRequest request, CompteInconnuException exception) {
+    public ResponseEntity<ErrorExport> gereCompteInconnuException(HttpServletRequest request, CompteInconnuException exception) {
         return new ResponseEntity<>(new ErrorExport(exception.getMessage(), exception.getClass().getName()), HttpStatus.NOT_FOUND);
     }
 
@@ -33,7 +33,7 @@ public class GestionnaireExceptions {
      * @return l'erreur 404
      */
     @ExceptionHandler(ClientInexistant.class)
-    public ResponseEntity<ErrorExport> gereAutreException(HttpServletRequest request, ClientInexistant exception) {
+    public ResponseEntity<ErrorExport> gereClientInexistantException(HttpServletRequest request, ClientInexistant exception) {
         return new ResponseEntity<>(new ErrorExport(exception.getMessage(), exception.getClass().getName()), HttpStatus.NOT_FOUND);
     }
 
@@ -47,7 +47,7 @@ public class GestionnaireExceptions {
      * @return l'erreur 404
      */
     @ExceptionHandler(MissingPathVariableException.class)
-    public ResponseEntity<ErrorExport> gereAutreException(HttpServletRequest request, MissingPathVariableException exception) {
+    public ResponseEntity<ErrorExport> gereMissingPathVariableException(HttpServletRequest request, MissingPathVariableException exception) {
         return new ResponseEntity<>(new ErrorExport(exception.getMessage(), exception.getClass().getName()), HttpStatus.NOT_FOUND);
     }
 
@@ -58,7 +58,7 @@ public class GestionnaireExceptions {
      * @return l'erreur 400
      */
     @ExceptionHandler(CompteClotureException.class)
-    public ResponseEntity<ErrorExport> gereAutreException(HttpServletRequest request, CompteClotureException exception) {
+    public ResponseEntity<ErrorExport> gereCompteClotureException(HttpServletRequest request, CompteClotureException exception) {
         return new ResponseEntity<>(new ErrorExport(exception.getMessage(), exception.getClass().getName()), HttpStatus.BAD_REQUEST);
     }
 
@@ -69,7 +69,7 @@ public class GestionnaireExceptions {
      * @return l'erreur 400
      */
     @ExceptionHandler(MontantInvalidException.class)
-    public ResponseEntity<ErrorExport> gereAutreException(HttpServletRequest request, MontantInvalidException exception) {
+    public ResponseEntity<ErrorExport> gereMontantInvalidException(HttpServletRequest request, MontantInvalidException exception) {
         return new ResponseEntity<>(new ErrorExport(exception.getMessage(), exception.getClass().getName()), HttpStatus.BAD_REQUEST);
     }
 
@@ -80,7 +80,7 @@ public class GestionnaireExceptions {
      * @return l'erreur 400
      */
     @ExceptionHandler(SoldeInsuffisantException.class)
-    public ResponseEntity<ErrorExport> gereAutreException(HttpServletRequest request, SoldeInsuffisantException exception) {
+    public ResponseEntity<ErrorExport> gereSoldeInsuffisantException(HttpServletRequest request, SoldeInsuffisantException exception) {
         return new ResponseEntity<>(new ErrorExport(exception.getMessage(), exception.getClass().getName()), HttpStatus.BAD_REQUEST);
     }
 
@@ -91,7 +91,7 @@ public class GestionnaireExceptions {
      * @return l'erreur 400
      */
     @ExceptionHandler(OperationNonConforme.class)
-    public ResponseEntity<ErrorExport> gereAutreException(HttpServletRequest request, OperationNonConforme exception) {
+    public ResponseEntity<ErrorExport> gereOperationNonConformeException(HttpServletRequest request, OperationNonConforme exception) {
         return new ResponseEntity<>(new ErrorExport(exception.getMessage(), exception.getClass().getName()), HttpStatus.BAD_REQUEST);
     }
 
@@ -103,6 +103,7 @@ public class GestionnaireExceptions {
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorExport> gereAutreException(HttpServletRequest request, Exception exception) {
+        exception.printStackTrace();
         return new ResponseEntity<>(new ErrorExport(exception.getMessage(), exception.getClass().getName()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
