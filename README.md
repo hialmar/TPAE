@@ -35,7 +35,7 @@ Note : la plupart de ces tests ne fonctionnent que via Maven puisqu'ils utilisen
 
 ---
 
-* [Documentation du projet ](https://hialmar.github.io/TPAE/)
+* [Documentation technique du projet (incluant les Javadocs) ](https://hialmar.github.io/TPAE/)
 
   
 ---
