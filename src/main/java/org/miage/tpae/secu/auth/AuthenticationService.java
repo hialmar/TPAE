@@ -13,6 +13,7 @@ import org.miage.tpae.secu.user.User;
 import org.miage.tpae.secu.user.UserRepository;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.AuthenticationServiceException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -42,6 +43,12 @@ public class AuthenticationService {
    * @return réponse d'authentification avec les jetons
    */
   public AuthenticationResponse register(RegisterRequest request) {
+    var existingUser = repository.findByEmail(request.getEmail());
+
+    if (existingUser.isPresent()) {
+      throw new AuthenticationServiceException("Utilisateur existant");
+    }
+
     // Construit un utilisateur
     var user = User.builder()
         .firstname(request.getFirstname())
@@ -50,6 +57,7 @@ public class AuthenticationService {
         .password(passwordEncoder.encode(request.getPassword()))
         .role(Role.USER)
         .build();
+
     // sauve l'utilisateur en BD
     var savedUser = repository.save(user);
     // génère les jetons
@@ -96,8 +104,8 @@ public class AuthenticationService {
 
   /**
    * Stocke un jeton d'accès en BD
-   * @param user
-   * @param jwtToken
+   * @param user utilisateur
+   * @param jwtToken token jwt
    */
   private void saveUserToken(User user, String jwtToken) {
     // construit le jeton
