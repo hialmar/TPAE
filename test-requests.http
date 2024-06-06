@@ -1,7 +1,24 @@
+POST http://localhost:8080/api/v1/auth/authenticate
+Content-Type: application/json
+
+{"email": "toto@toto.com","password": "password"}
+
+> {% client.global.set("auth_token", response.body.access_token);
+     client.global.set("refresh_token", response.body.refresh_token); %}
 
 ###
-POST http://localhost:9000/api/clients
+POST http://localhost:8080/api/v1/auth/refresh-token
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+> {% client.global.set("auth_token", response.body.access_token);
+    client.global.set("refresh_token", response.body.refresh_token); %}
+
+
+###
+POST http://localhost:8080/api/clients
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
  "nom": "AAA",
@@ -9,64 +26,79 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:9000/api/clients/1
+GET http://localhost:8080/api/clients/1
+Authorization: Bearer {{auth_token}}
 
 ###
-GET http://localhost:9000/api/clients/1/comptes
+GET http://localhost:8080/api/clients/1/comptes
+Authorization: Bearer {{auth_token}}
 
 ###
-POST http://localhost:9000/api/clients/2/comptes
+POST http://localhost:8080/api/clients/1/comptes
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
    "solde" : 1000
 }
 
 ###
-GET http://localhost:9000/api/comptes/1
+GET http://localhost:8080/api/comptes/1
+Authorization: Bearer {{auth_token}}
 
 ###
-GET http://localhost:9000/api/clients/2
+GET http://localhost:8080/api/clients/2
+Authorization: Bearer {{auth_token}}
 
 ###
-POST http://localhost:9000/api/clients
+POST http://localhost:8080/api/clients
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 { "nom" : "Durand", "prenom" : "Marcel" }
 
 ###
-POST http://localhost:9000/api/clients/1/comptes
+POST http://localhost:8080/api/clients/3/comptes
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 { "solde" : 10000 }
 
 ###
-GET http://localhost:9000/api/clients/1/comptes
+GET http://localhost:8080/api/clients/3/comptes
+Authorization: Bearer {{auth_token}}
 
 ###
-GET http://localhost:9000/api/comptes/1
+GET http://localhost:8080/api/comptes/203
+Authorization: Bearer {{auth_token}}
 
 ###
-GET http://localhost:9000/api/comptes/2/operations
+GET http://localhost:8080/api/comptes/1/operations
+Authorization: Bearer {{auth_token}}
 
 ###
-POST http://localhost:9000/api/comptes/2/operations
+POST http://localhost:8080/api/comptes/3/operations
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 { "valeur" : 100, "operationType" : "CREDIT" }
 
 ###
-POST http://localhost:9000/api/comptes/2/operations
+POST http://localhost:8080/api/comptes/3/operations
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 { "valeur" : 100, "operationType" : "DEBIT" }
 
 ###
-POST http://localhost:9000/api/comptes/1/operations/virements
+POST http://localhost:8080/api/comptes/1/operations/virements
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 { "valeur" : 100, "idCompteDestinataire" : 3 }
 
 ###
-DELETE http://localhost:9000/api/comptes/2
+DELETE http://localhost:8080/api/comptes/3
+Authorization: Bearer {{auth_token}}
+
 

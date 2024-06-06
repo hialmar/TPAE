@@ -25,7 +25,7 @@ public class JwtService {
   @Value("${application.security.jwt.secret-key}")
   private String secretKey;
   // expiration des jetons d'accès
-  @Value("${application.security.jwt.expiration}")
+  @Value("${application.security.jwt.expiration}0")
   private long jwtExpiration;
   // expiration des jetons de rafraichissement
   @Value("${application.security.jwt.refresh-token.expiration}")
