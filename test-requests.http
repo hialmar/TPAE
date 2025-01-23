@@ -20,7 +20,7 @@ Content-Type: application/json
 ### Raffraichissement du token d'authentification
 POST http://localhost:8080/api/v1/auth/refresh-token
 Content-Type: application/json
-Authorization: Bearer {{auth_token}}
+Authorization: Bearer {{refresh_token}}
 
 > {% client.global.set("auth_token", response.body.access_token);
     client.global.set("refresh_token", response.body.refresh_token); %}
