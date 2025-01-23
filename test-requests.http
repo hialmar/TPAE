@@ -1,72 +1,121 @@
-
-###
-POST http://localhost:9000/api/clients
+### Création compte utilisateur
+POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
+
+{"firstname": "tutu","lastname": "tutu","email": "tutu@toto.com","password": "password"}
+
+> {% client.global.set("auth_token", response.body.access_token);
+    client.global.set("refresh_token", response.body.refresh_token); %}
+
+
+### Authentification
+POST http://localhost:8080/api/v1/auth/authenticate
+Content-Type: application/json
+
+{"email": "toto@toto.com","password": "password"}
+
+> {% client.global.set("auth_token", response.body.access_token);
+     client.global.set("refresh_token", response.body.refresh_token); %}
+
+### Raffraichissement du token d'authentification
+POST http://localhost:8080/api/v1/auth/refresh-token
+Content-Type: application/json
+Authorization: Bearer {{refresh_token}}
+
+> {% client.global.set("auth_token", response.body.access_token);
+    client.global.set("refresh_token", response.body.refresh_token); %}
+
+
+### Logout
+POST http://localhost:8080/api/v1/auth/logout
+
+
+# Toutes les autres requêtes sont authentifiées via les tokens reçus
+
+### Création client
+POST http://localhost:8080/api/clients
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
  "nom": "AAA",
  "prenom": "aaa"
 }
 
-###
-GET http://localhost:9000/api/clients/1
+### Récupération d'un client
+GET http://localhost:8080/api/clients/1
+Authorization: Bearer {{auth_token}}
 
-###
-GET http://localhost:9000/api/clients/1/comptes
+### Récupération des comptes
+GET http://localhost:8080/api/clients/1/comptes
+Authorization: Bearer {{auth_token}}
 
-###
-POST http://localhost:9000/api/clients/2/comptes
+### Création d'un compte
+POST http://localhost:8080/api/clients/1/comptes
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 {
    "solde" : 1000
 }
 
-###
-GET http://localhost:9000/api/comptes/1
+### Récupération de la position du compte
+GET http://localhost:8080/api/comptes/1
+Authorization: Bearer {{auth_token}}
 
-###
-GET http://localhost:9000/api/clients/2
+### Récupération des données du client
+GET http://localhost:8080/api/clients/2
+Authorization: Bearer {{auth_token}}
 
-###
-POST http://localhost:9000/api/clients
+### Création d'un client
+POST http://localhost:8080/api/clients
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 { "nom" : "Durand", "prenom" : "Marcel" }
 
-###
-POST http://localhost:9000/api/clients/1/comptes
+### Création d'un compte
+POST http://localhost:8080/api/clients/3/comptes
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 { "solde" : 10000 }
 
-###
-GET http://localhost:9000/api/clients/1/comptes
+### Liste des comptes d'un client
+GET http://localhost:8080/api/clients/3/comptes
+Authorization: Bearer {{auth_token}}
 
-###
-GET http://localhost:9000/api/comptes/1
+### Position d'un compte
+GET http://localhost:8080/api/comptes/203
+Authorization: Bearer {{auth_token}}
 
-###
-GET http://localhost:9000/api/comptes/2/operations
+### Liste des opérations d'un compte
+GET http://localhost:8080/api/comptes/1/operations
+Authorization: Bearer {{auth_token}}
 
-###
-POST http://localhost:9000/api/comptes/2/operations
+### Crédit
+POST http://localhost:8080/api/comptes/3/operations
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 { "valeur" : 100, "operationType" : "CREDIT" }
 
-###
-POST http://localhost:9000/api/comptes/2/operations
+### Débit
+POST http://localhost:8080/api/comptes/3/operations
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 { "valeur" : 100, "operationType" : "DEBIT" }
 
-###
-POST http://localhost:9000/api/comptes/1/operations/virements
+### Virement
+POST http://localhost:8080/api/comptes/1/operations/virements
 Content-Type: application/json
+Authorization: Bearer {{auth_token}}
 
 { "valeur" : 100, "idCompteDestinataire" : 3 }
 
-###
-DELETE http://localhost:9000/api/comptes/2
+### Fermeture d'un compte
+DELETE http://localhost:8080/api/comptes/3
+Authorization: Bearer {{auth_token}}
+
 
