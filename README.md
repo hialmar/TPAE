@@ -23,17 +23,21 @@ http.authorizeHttpRequests().requestMatchers("/**").permitAll();
 
 Si cette ligne n'est pas présente, il faut d'abord créer un utilisateur avec :
 
+```
 POST http://localhost:8080/api/v1/auth/register
 Content-Type: application/json
 
 {"firstname": "tutu","lastname": "tutu","email": "tutu@toto.com","password": "password"}
+```
 
 Puis pour s'authentifier :
 
+```
 POST http://localhost:8080/api/v1/auth/authenticate
 Content-Type: application/json
 
 {"email": "tutu@toto.com","password": "password"}
+```
 
 Cette requête retourne deux tokens :
 {
@@ -43,14 +47,18 @@ Cette requête retourne deux tokens :
 
 Le premier doit être utilisé en tant que Bearer :
 
+```
 GET http://localhost:8080/api/clients/1
 Authorization: Bearer {{auth_token}}
+```
 
 Le second sert pour rafraichir le premier token comme ceci :
 
+```
 POST http://localhost:8080/api/v1/auth/refresh-token
 Content-Type: application/json
 Authorization: Bearer {{refresh_token}}
+```
 
 Pour les autres fonctionnalités, voir la classe org.miage.tpae.secu.auth.AuthenticationController
 
