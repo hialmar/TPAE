@@ -35,6 +35,7 @@ class ClientRepositoryTest {
         client.setPrenom("Jean");
         // on l'insère en base
         client = clientRepository.save(client);
+        System.out.println(client);
         // on vérifie que JPA nous a bien donné un id
         assertNotNull(client.getId());
         // on teste la méthode
