@@ -64,7 +64,7 @@ GET http://localhost:8080/api/comptes/1
 Authorization: Bearer {{auth_token}}
 
 ### Récupération des données du client
-GET http://localhost:8080/api/clients/2
+GET http://localhost:8080/api/clients/104
 Authorization: Bearer {{auth_token}}
 
 ### Création d'un client
@@ -75,7 +75,7 @@ Authorization: Bearer {{auth_token}}
 { "nom" : "Durand", "prenom" : "Marcel" }
 
 ### Création d'un compte
-POST http://localhost:8080/api/clients/3/comptes
+POST http://localhost:8080/api/clients/103/comptes
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
@@ -86,11 +86,11 @@ GET http://localhost:8080/api/clients/3/comptes
 Authorization: Bearer {{auth_token}}
 
 ### Position d'un compte
-GET http://localhost:8080/api/comptes/203
+GET http://localhost:8080/api/comptes/3
 Authorization: Bearer {{auth_token}}
 
 ### Liste des opérations d'un compte
-GET http://localhost:8080/api/comptes/1/operations
+GET http://localhost:8080/api/comptes/3/operations
 Authorization: Bearer {{auth_token}}
 
 ### Crédit
@@ -108,14 +108,14 @@ Authorization: Bearer {{auth_token}}
 { "valeur" : 100, "operationType" : "DEBIT" }
 
 ### Virement
-POST http://localhost:8080/api/comptes/1/operations/virements
+POST http://localhost:8080/api/comptes/3/operations/virements
 Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
-{ "valeur" : 100, "idCompteDestinataire" : 3 }
+{ "valeur" : 100, "idCompteDestinataire" : 103 }
 
 ### Fermeture d'un compte
-DELETE http://localhost:8080/api/comptes/3
+DELETE http://localhost:8080/api/comptes/1
 Authorization: Bearer {{auth_token}}
 
 

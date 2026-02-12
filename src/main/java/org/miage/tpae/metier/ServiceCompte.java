@@ -143,7 +143,7 @@ public class ServiceCompte {
     public void crediter(long idCompte, double montant) throws CompteInconnuException, MontantInvalidException, CompteClotureException {
         //Récupération du compte et vérification des règles métiers
         if (montant < 0.) {
-            throw new MontantInvalidException("Le montant à débiter ne peut pas être négatif.");
+            throw new MontantInvalidException("Le montant à créditer ne peut pas être négatif.");
         }
         Compte c = findCompte(idCompte);
         //Opération métier
