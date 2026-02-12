@@ -10,7 +10,10 @@ https://moodle-miage-toulouse.westeurope.cloudapp.azure.com/course/view.php?id=2
 ### Configuration
 
 Ce TP utilise une base de données MySQL qu'on peut créer sous Docker avec la commande :
+
+```
 docker run --name=mysqltp -e MYSQL_ROOT_PASSWORD=my-secret-pw -e MYSQL_DATABASE=test -p 3306:3306 mysql
+```
 
 Si vous avez des problèmes avec Docker pour Windows on vous recommande WAMP : https://www.wampserver.com/
 
@@ -40,10 +43,12 @@ Content-Type: application/json
 ```
 
 Cette requête retourne deux tokens :
+```
 {
 "access_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b3RvQHRvdG8uY29tIiwiaWF0IjoxNzM3NjUwNjY4LCJleHAiOjE3Mzc2NTEyNjh9.PBFNQJ_ocS2zI8ozQ33HsIrkyakXYspm4ly5Ah3fNIE",
 "refresh_token": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0b3RvQHRvdG8uY29tIiwiaWF0IjoxNzM3NjUwNjY4LCJleHAiOjE3MzgyNTU0Njh9.s3weYGHE_7lAcwZnwSdqWqmx4c4D1UG0PTAB7kLaqL4"
 }
+```
 
 Le premier doit être utilisé en tant que Bearer :
 
