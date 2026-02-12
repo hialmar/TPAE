@@ -33,7 +33,7 @@ public class SecurityConfiguration {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
     // pour désactiver la sécurité
-    //http.authorizeHttpRequests().requestMatchers("/**").permitAll();
+    http.authorizeHttpRequests().requestMatchers("/**").permitAll();
 
     http
         .csrf()
