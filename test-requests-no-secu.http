@@ -44,7 +44,7 @@ Content-Type: application/json
 GET http://localhost:8080/api/clients/3/comptes
 
 ### Position d'un compte
-GET http://localhost:8080/api/comptes/603
+GET http://localhost:8080/api/comptes/3
 
 ### Liste des opérations d'un compte
 GET http://localhost:8080/api/comptes/1/operations

@@ -26,7 +26,7 @@ public class TpaeApplication implements CommandLineRunner {
     /**
      * logger
      */
-    private static Logger logger = LogManager.getLogger(TpaeApplication.class);
+    private static final Logger logger = LogManager.getLogger(TpaeApplication.class);
 
     /**
      * repo pour tests
@@ -42,7 +42,7 @@ public class TpaeApplication implements CommandLineRunner {
     private final OperationCompteRepository operationCompteRepository;
 
     /**
-     * constructeur pour l'injection de dépendances
+     * Constructeur pour l'injection de dépendances
      * @param clientRepository bean à injecter
      * @param compteRepository bean à injecter
      * @param operationCompteRepository bean à injecter
@@ -63,29 +63,29 @@ public class TpaeApplication implements CommandLineRunner {
 
     /**
      * Méthode pour tester les répositories
-     * On a besoin du Transactionnal pour que les listes de comptes remontent avec les clients
+     * On a besoin du @Transactionnal pour que les listes de comptes remontent avec les clients
      * @param args arguments non utilisés
      * @throws Exception en cas de problème avec la BD
      */
     @Override
     @Transactional(propagation=Propagation.REQUIRED, noRollbackFor=Exception.class)
     public void run(String... args) throws Exception {
-        List<Client> clientList = clientRepository.findByPrenomAndNom("Jean", "Dupont");
+        List<Client> clientList = clientRepository.findByPrenomAndNom("Joel", "Martin");
 
         if (clientList.isEmpty()) {
             Client c = new Client();
-            c.setNom("Dupont");
-            c.setPrenom("Jean");
+            c.setNom("Martin");
+            c.setPrenom("Joel");
             c = clientRepository.save(c);
 
-            logger.info("Client " + c);
+            logger.info("Client {}", c);
 
             Compte cpt = new Compte();
             cpt.setClient(c);
             cpt.setSolde(1000);
             cpt = compteRepository.save(cpt);
 
-            logger.info("Compte " + cpt);
+            logger.info("Compte {}", cpt);
 
             OperationCompte operationCompte = new OperationCompte();
             operationCompte.setCompte(cpt);
@@ -93,11 +93,11 @@ public class TpaeApplication implements CommandLineRunner {
             operationCompte.setDateOperation(GregorianCalendar.getInstance());
             operationCompte = operationCompteRepository.save(operationCompte);
 
-            logger.info("Operation " + operationCompte);
+            logger.info("Operation {}", operationCompte);
 
-            clientList = clientRepository.findByPrenomAndNom("Jean", "Dupond");
+            clientList = clientRepository.findByPrenomAndNom("Jean", "Dupont");
         }
 
-        logger.info("Liste : "+clientList);
+        logger.info("Liste : {}", clientList);
     }
 }
