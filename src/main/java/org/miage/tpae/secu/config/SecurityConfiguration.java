@@ -34,24 +34,29 @@ public class SecurityConfiguration {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
     // pour désactiver la sécurité
-    //http
-    //        .authorizeHttpRequests(auth -> auth
-    //                .requestMatchers( "/**").permitAll());
+    boolean desactiveSecu = true;
 
-    http
-            .csrf(AbstractHttpConfigurer::disable)
-            .authorizeHttpRequests(auth -> auth
-                    .requestMatchers( "/api/v1/auth/**").permitAll()
-                    .requestMatchers( "/**").authenticated());
-    http.sessionManagement(sess -> sess
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .authenticationProvider(authenticationProvider) // précise le fournisseur d'auth
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // et le filtre
-            .logout((logout) -> logout.logoutUrl("/api/v1/auth/logout")
-                    .addLogoutHandler(logoutHandler) // précise le gestionnaire de déconnexion
-                    .logoutSuccessHandler(
-                            (request, response, authentication)
-                                    -> SecurityContextHolder.clearContext()));
+    if (desactiveSecu) {
+
+      http
+              .authorizeHttpRequests(auth -> auth
+                      .requestMatchers("/**").permitAll());
+
+    }
+      http
+              .csrf(AbstractHttpConfigurer::disable)
+              .authorizeHttpRequests(auth -> auth
+                      .requestMatchers("/api/v1/auth/**").permitAll()
+                      .requestMatchers("/**").authenticated());
+      http.sessionManagement(sess -> sess
+                      .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+              .authenticationProvider(authenticationProvider) // précise le fournisseur d'auth
+              .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // et le filtre
+              .logout((logout) -> logout.logoutUrl("/api/v1/auth/logout")
+                      .addLogoutHandler(logoutHandler) // précise le gestionnaire de déconnexion
+                      .logoutSuccessHandler(
+                              (request, response, authentication)
+                                      -> SecurityContextHolder.clearContext()));
 
     return http.build();
   }

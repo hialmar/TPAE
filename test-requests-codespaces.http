@@ -1,0 +1,121 @@
+### Création compte utilisateur
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/v1/auth/register
+Content-Type: application/json
+
+{"firstname": "tutu","lastname": "tutu","email": "tutu@toto.com","password": "password"}
+
+> {% client.global.set("auth_token", response.body.access_token);
+    client.global.set("refresh_token", response.body.refresh_token); %}
+
+
+### Authentification
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/v1/auth/authenticate
+Content-Type: application/json
+
+{"email": "toto@toto.com","password": "password"}
+
+> {% client.global.set("auth_token", response.body.access_token);
+     client.global.set("refresh_token", response.body.refresh_token); %}
+
+### Raffraichissement du token d'authentification
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/v1/auth/refresh-token
+Content-Type: application/json
+Authorization: Bearer {{refresh_token}}
+
+> {% client.global.set("auth_token", response.body.access_token);
+    client.global.set("refresh_token", response.body.refresh_token); %}
+
+
+### Logout
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/v1/auth/logout
+
+
+# Toutes les autres requêtes sont authentifiées via les tokens reçus
+
+### Création client
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/clients
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+ "nom": "ABC",
+ "prenom": "aaa"
+}
+
+### Récupération d'un client
+GET https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/clients/1
+Authorization: Bearer {{auth_token}}
+
+### Récupération des comptes
+GET https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/clients/1/comptes
+Authorization: Bearer {{auth_token}}
+
+### Création d'un compte
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/clients/1/comptes
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+   "solde" : 1000
+}
+
+### Récupération de la position du compte
+GET https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/comptes/1
+Authorization: Bearer {{auth_token}}
+
+### Récupération des données du client
+GET https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/clients/104
+Authorization: Bearer {{auth_token}}
+
+### Création d'un client
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/clients
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{ "nom" : "Durand", "prenom" : "Marcel" }
+
+### Création d'un compte
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/clients/103/comptes
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{ "solde" : 10000 }
+
+### Liste des comptes d'un client
+GET https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/clients/3/comptes
+Authorization: Bearer {{auth_token}}
+
+### Position d'un compte
+GET https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/comptes/3
+Authorization: Bearer {{auth_token}}
+
+### Liste des opérations d'un compte
+GET https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/comptes/3/operations
+Authorization: Bearer {{auth_token}}
+
+### Crédit
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/comptes/3/operations
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{ "valeur" : 100, "operationType" : "CREDIT" }
+
+### Débit
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/comptes/3/operations
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{ "valeur" : 100, "operationType" : "DEBIT" }
+
+### Virement
+POST https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/comptes/3/operations/virements
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{ "valeur" : 100, "idCompteDestinataire" : 103 }
+
+### Fermeture d'un compte
+DELETE https://miniature-eureka-q795wxrr9cx9vv-8080.app.github.dev/api/comptes/1
+Authorization: Bearer {{auth_token}}
+
+
