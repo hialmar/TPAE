@@ -40,9 +40,9 @@ public class ApplicationConfig {
   @Bean
   public AuthenticationProvider authenticationProvider() {
     // fournisseur d'authentification lié à une BD
-    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
     // on lui donne le bean qui va aller chercher les données en BD
-    authProvider.setUserDetailsService(userDetailsService());
+    DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider(userDetailsService());
+
     // on lui donne l'encodeur de mot de passe
     authProvider.setPasswordEncoder(passwordEncoder());
     // retourne le bean

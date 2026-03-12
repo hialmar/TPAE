@@ -11,9 +11,9 @@ import org.miage.tpae.metier.ServiceCompte;
 import org.miage.tpae.secu.config.JwtService;
 import org.miage.tpae.secu.token.TokenRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.boot.webmvc.test.autoconfigure.WebMvcTest;
 import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
@@ -38,24 +38,24 @@ class RestClientTest {
     private MockMvc mvc; // injecté automatiquement
 
     // Tous les autres beans sont mockés
-    @MockBean
+    @MockitoBean
     private ServiceClient serviceClient;
 
-    @MockBean
+    @MockitoBean
     private ServiceCompte serviceCompte;
 
-    @MockBean // on en a besoin pour le démarrage des tests car il est utilisé par serviceCompte
+    @MockitoBean // on en a besoin pour le démarrage des tests car il est utilisé par serviceCompte
     private ClientRepository clientRepository;
 
-    @MockBean // on en a besoin pour le démarrage des tests car il est utilisé par serviceCompte
+    @MockitoBean // on en a besoin pour le démarrage des tests car il est utilisé par serviceCompte
     private CompteRepository compteRepository;
 
-    @MockBean
+    @MockitoBean
     OperationCompteRepository operationCompteRepository;
 
-    @MockBean
+    @MockitoBean
     JwtService jwtService;
-    @MockBean
+    @MockitoBean
     TokenRepository tokenRepository;
 
     /**

@@ -5,7 +5,7 @@ import org.miage.tpae.entities.Client;
 import org.miage.tpae.entities.Compte;
 import org.miage.tpae.entities.OperationCompte;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
 import java.util.Collection;
 import java.util.GregorianCalendar;

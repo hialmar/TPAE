@@ -11,7 +11,7 @@ import org.miage.tpae.entities.OperationCompte;
 import org.miage.tpae.export.Position;
 import org.miage.tpae.utilities.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 
 import java.util.Collection;
 import java.util.Optional;

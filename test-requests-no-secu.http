@@ -4,7 +4,7 @@ POST http://localhost:8080/api/clients
 Content-Type: application/json
 
 {
- "nom": "AAB",
+ "nom": "BBBB",
  "prenom": "aab"
 }
 
