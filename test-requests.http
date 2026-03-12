@@ -38,7 +38,7 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
- "nom": "AAA",
+ "nom": "ABC",
  "prenom": "aaa"
 }
 

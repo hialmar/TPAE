@@ -4,8 +4,8 @@ POST http://localhost:8080/api/clients
 Content-Type: application/json
 
 {
- "nom": "AAA",
- "prenom": "aaa"
+ "nom": "AAB",
+ "prenom": "aab"
 }
 
 ### Récupération d'un client

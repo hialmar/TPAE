@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -33,27 +34,24 @@ public class SecurityConfiguration {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
     // pour désactiver la sécurité
-    http.authorizeHttpRequests().requestMatchers("/**").permitAll();
+    //http
+    //        .authorizeHttpRequests(auth -> auth
+    //                .requestMatchers( "/**").permitAll());
 
     http
-        .csrf()
-        .disable()// protection contre les attaques CSRF
-        .authorizeHttpRequests()
-        .requestMatchers("/api/v1/auth/**")
-          .permitAll() // permet l'accès non connecté à ce qui permet de s'enregistrer et de se connecter
-        .anyRequest()
-          .authenticated() // toutes les autres requêtes doivent être authentifiées
-        .and()
-          .sessionManagement()
-          .sessionCreationPolicy(SessionCreationPolicy.STATELESS) // c'est une API donc on est stateless
-        .and()
-        .authenticationProvider(authenticationProvider) // précise le fournisseur d'auth
-        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // et le filtre
-        .logout()
-        .logoutUrl("/api/v1/auth/logout")
-        .addLogoutHandler(logoutHandler) // précise le gestionnaire de déconnexion
-        .logoutSuccessHandler((request, response, authentication) -> SecurityContextHolder.clearContext())
-    ;
+            .csrf(AbstractHttpConfigurer::disable)
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers( "/api/v1/auth/**").permitAll()
+                    .requestMatchers( "/**").authenticated());
+    http.sessionManagement(sess -> sess
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authenticationProvider(authenticationProvider) // précise le fournisseur d'auth
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class) // et le filtre
+            .logout((logout) -> logout.logoutUrl("/api/v1/auth/logout")
+                    .addLogoutHandler(logoutHandler) // précise le gestionnaire de déconnexion
+                    .logoutSuccessHandler(
+                            (request, response, authentication)
+                                    -> SecurityContextHolder.clearContext()));
 
     return http.build();
   }
