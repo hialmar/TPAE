@@ -93,7 +93,9 @@ Note : la plupart de ces tests ne fonctionnent que via Maven puisqu'ils utilisen
 
 * [Documentation technique du projet (incluant les Javadocs) ](https://hialmar.github.io/TPAE/)
 
-  
+
+Lorsque l'application fonctionne :
+
 * [Documentation de l'API REST](http://localhost:8080/swagger-ui/index.html)
 
 ---
