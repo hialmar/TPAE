@@ -1,6 +1,7 @@
 package org.miage.tpae.entities;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -20,18 +21,21 @@ public class Client {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Schema(description = "Id du client", example = "1")
     private Long id;
 
     /**
      * Nom du client
      */
     @NotNull
+    @Schema(description = "Nom d'un client", example = "Dupont")
     private String nom;
 
     /**
      * Prénom du client
      */
     @NotNull
+    @Schema(description = "Prénom d'un client", example = "Jean")
     private String prenom;
 
     /**
@@ -39,6 +43,7 @@ public class Client {
      */
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "client")
     @JsonManagedReference // on inclura les comptes en JSON
+    @Schema(description = "Liste des comptes d'un client", example = "")
     private List<Compte> comptes;
 
     /**

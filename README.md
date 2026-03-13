@@ -21,10 +21,11 @@ Si vous avez des problèmes avec Docker pour Windows on vous recommande WAMP : h
 
 La sécurité est désactivée par défaut.
 Si vous voulez l'activer, il faut aller dans la classe org.miage.tpae.secu.config.SecurityConfiguration,
-dans la méthode securityFilterChain et commenter la ligne suivante :
-http.authorizeHttpRequests().requestMatchers("/**").permitAll();
+dans la méthode securityFilterChain et changer le booléen :
+// pour désactiver la sécurité
+boolean desactiveSecu = true;
 
-Si cette ligne n'est pas présente, il faut d'abord créer un utilisateur avec :
+Si la sécurité est active, il faut d'abord créer un utilisateur avec :
 
 ```
 POST http://localhost:8080/api/v1/auth/register
@@ -67,6 +68,7 @@ Authorization: Bearer {{refresh_token}}
 
 Pour les autres fonctionnalités, voir la classe org.miage.tpae.secu.auth.AuthenticationController
 
+Pour générer la doc de l'API REST la sécurité doit être désactivée.
 
 ### Infos sur les Tests
 
@@ -92,6 +94,8 @@ Note : la plupart de ces tests ne fonctionnent que via Maven puisqu'ils utilisen
 * [Documentation technique du projet (incluant les Javadocs) ](https://hialmar.github.io/TPAE/)
 
   
+* [Documentation de l'API REST](http://localhost:8080/swagger-ui/index.html)
+
 ---
 
 # Tutoriels

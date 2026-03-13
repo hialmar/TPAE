@@ -1,8 +1,19 @@
 package org.miage.tpae.secu.auth;
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Contact;
+import io.swagger.v3.oas.annotations.info.Info;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.miage.tpae.export.OperationImport;
+import org.miage.tpae.export.Position;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,6 +28,11 @@ import java.io.IOException;
 @RestController
 @RequestMapping("/api/v1/auth")
 @RequiredArgsConstructor
+@OpenAPIDefinition(
+        info = @Info( title = "Service d'authentification",
+                description = "Service gérant l'authentification et la (ré)génération des jetons d'authentification",
+                contact = @Contact(name = "Patrice Torguet", email = "patrice.torguet@irit.fr"),
+                version = "0.1"))
 public class AuthenticationController {
 
   /**
@@ -36,6 +52,18 @@ public class AuthenticationController {
    * }
    */
   @PostMapping("/register")
+  @Operation(summary = "Créer un compte d'authentification",
+          description = "Permet de s'enregistrer",
+          tags = { "authentification" },
+          requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                  description = "Infos du compte d'authentification",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = RegisterRequest.class)),
+                  required = true))
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Jetons d'authentification",
+                  content = { @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = AuthenticationResponse.class)) })})
   public ResponseEntity<AuthenticationResponse> register(
       @RequestBody RegisterRequest request
   ) {
@@ -55,6 +83,18 @@ public class AuthenticationController {
    * }
    */
   @PostMapping("/authenticate")
+  @Operation(summary = "Authentification",
+          description = "Permet de s'authentifier",
+          tags = { "authentification" },
+          requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                  description = "Requête d'authentification",
+                  content = @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = AuthenticationRequest.class)),
+                  required = true))
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Jetons d'authentification",
+                  content = { @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = AuthenticationResponse.class)) })})
   public ResponseEntity<AuthenticationResponse> authenticate(
       @RequestBody AuthenticationRequest request
   ) {
@@ -68,6 +108,13 @@ public class AuthenticationController {
    * @throws IOException en cas de problème avec JWT
    */
   @PostMapping("/refresh-token")
+  @Operation(summary = "Régénération du jeton d'authentification",
+          description = "Permet de regénérer les jetons d'authentification",
+          tags = { "authentification" })
+  @ApiResponses(value = {
+          @ApiResponse(responseCode = "200", description = "Jetons d'authentification",
+                  content = { @Content(mediaType = "application/json",
+                          schema = @Schema(implementation = AuthenticationResponse.class)) })})
   public void refreshToken(
       HttpServletRequest request,
       HttpServletResponse response

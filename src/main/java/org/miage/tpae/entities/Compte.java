@@ -2,6 +2,7 @@ package org.miage.tpae.entities;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -21,22 +22,26 @@ public class Compte {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Schema(description = "Id d'un compte", example = "1")
     private Long id;
 
     /**
      * Solde du compte
      */
+    @Schema(description = "Solde d'un compte", example = "1000")
     private double solde;
 
     /**
      * Le compte est-il actif ou fermé ?
      */
+    @Schema(description = "Le compte est-il actif ou fermé ?", example = "true")
     private boolean actif = true;
 
     /**
      * Date de dernière interrogation du compte
      */
     @Temporal(TemporalType.TIMESTAMP)
+    @Schema(description = "Date de dernière interrogation du compte", example = "2026-03-13T08:38:20.296Z")
     private Calendar dateInterrogation;
 
     /**

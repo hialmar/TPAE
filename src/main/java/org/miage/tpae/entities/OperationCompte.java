@@ -1,5 +1,6 @@
 package org.miage.tpae.entities;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
@@ -27,6 +28,7 @@ public class OperationCompte {
      */
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Schema(description = "Id de l'opération", example = "1")
     private Long id;
 
     /**
@@ -34,12 +36,14 @@ public class OperationCompte {
      */
     @Enumerated(EnumType.STRING)
     @NotNull
+    @Schema(description = "Type de l'opération", example = "CREDIT")
     private OperationType operationType;
 
     /**
      * Valeur de l'opération
      */
     @NotNull
+    @Schema(description = "Valeur de l'opération", example = "1000")
     private double valeur;
 
     /**
@@ -47,6 +51,7 @@ public class OperationCompte {
      */
     @Temporal(TemporalType.TIMESTAMP)
     @NotNull
+    @Schema(description = "Date de l'opération", example = "2026-03-13T08:40:40.539Z")
     private Calendar dateOperation;
 
     /**
@@ -54,6 +59,7 @@ public class OperationCompte {
      */
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn
+    @Schema(description = "Compte sur lequel l'opération a eu lieu", example = "")
     private Compte compte;
 
     /**

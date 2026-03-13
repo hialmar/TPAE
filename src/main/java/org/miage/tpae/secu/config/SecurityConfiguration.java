@@ -34,7 +34,7 @@ public class SecurityConfiguration {
   public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
     // pour désactiver la sécurité
-    boolean desactiveSecu = false;
+    boolean desactiveSecu = true;
 
     if (desactiveSecu) {
 
